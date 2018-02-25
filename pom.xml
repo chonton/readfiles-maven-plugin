@@ -3,14 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.honton.chas</groupId>
-  <artifactId>readfile-maven-plugin</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <artifactId>readfiles-maven-plugin</artifactId>
+  <version>0.0.1</version>
   <packaging>maven-plugin</packaging>
 
   <name>Read Files Maven Plugin</name>
 
-  <description>Read File into Maven Property</description>
-  <url>https://github.com/chonton/readfile-maven-plugin</url>
+  <description>Reads File into Maven Properties</description>
+  <url>https://github.com/chonton/readfiles-maven-plugin</url>
   <inceptionYear>2018</inceptionYear>
 
   <licenses>
@@ -30,9 +30,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/chonton/readfile-maven-plugin</connection>
-    <developerConnection>scm:git:git@github.com:chonton/readfile-maven-plugin</developerConnection>
-    <url>https://github.com/chonton/readfile-maven-plugin</url>
+    <connection>scm:git:git://github.com/chonton/readfiles-maven-plugin</connection>
+    <developerConnection>scm:git:git@github.com:chonton/readfiles-maven-plugin</developerConnection>
+    <url>https://github.com/chonton/readfiles-maven-plugin</url>
   </scm>
 
   <distributionManagement>
@@ -49,7 +49,7 @@
 
     <site>
       <id>github</id>
-      <url>https://chonton.github.com/readfile-maven-plugin/${project.version}</url>
+      <url>https://chonton.github.com/readfiles-maven-plugin/${project.version}</url>
     </site>
 
   </distributionManagement>
@@ -82,18 +82,70 @@
   </dependencies>
 
   <build>
+    <pluginManagement>
+      <plugins>
+
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>2.5</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.3</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.6</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.3</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-install-plugin</artifactId>
-        <version>2.4</version>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.4.1</version>
+        <executions>
+          <execution>
+            <id>enforce-plugin-versions</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requirePluginVersions>
+                  <message>Best Practice is to always define plugin versions!</message>
+                  <banLatest>true</banLatest>
+                  <banRelease>true</banRelease>
+                  <banSnapshots>true</banSnapshots>
+                  <phases>clean,deploy,site</phases>
+                  <unCheckedPluginList>org.apache.maven.plugins:maven-surefire-plugin,org.apache.maven.plugins:maven-deploy-plugin</unCheckedPluginList>
+                </requirePluginVersions>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -115,16 +167,10 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
         <version>3.4</version>
         <configuration>
-          <goalPrefix>readfile</goalPrefix>
+          <goalPrefix>readfiles</goalPrefix>
           <extractors>
             <extractor>java-annotations</extractor>
           </extractors>

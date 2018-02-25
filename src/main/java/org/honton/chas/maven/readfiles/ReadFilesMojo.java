@@ -1,4 +1,4 @@
-package org.honton.chas.maven.readfile;
+package org.honton.chas.maven.readfiles;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,13 +19,10 @@ import org.apache.maven.plugins.annotations.Parameter;
 @Mojo(name = "readfiles", defaultPhase = LifecyclePhase.INITIALIZE)
 public class ReadFilesMojo extends AbstractMojo {
 
-  @Parameter(defaultValue = "${project.properties}", readonly = true, required = true)
-  private Properties projectProperties;
-
   /**
    * Prefix for the target properties
    */
-  @Parameter(defaultValue = "readfiles.")
+  @Parameter(defaultValue = "")
   private String prefix;
 
   /**
@@ -33,6 +30,15 @@ public class ReadFilesMojo extends AbstractMojo {
    */
   @Parameter(defaultValue = "${project.build.sourceEncoding}")
   private String encoding;
+
+  /**
+   * Skip executing this plugin
+   */
+  @Parameter(defaultValue = "false", property = "readfiles.skip")
+  private boolean skip;
+
+  @Parameter(defaultValue = "${project.properties}", readonly = true, required = true)
+  private Properties projectProperties;
 
   private Charset charset;
 
@@ -43,13 +49,22 @@ public class ReadFilesMojo extends AbstractMojo {
   private File[] files;
 
   public void execute() throws MojoExecutionException {
+    if (skip) {
+      getLog().info("skipping");
+      return;
+    }
+
     charset = createCharset();
     try {
       for (File file : files) {
 
-        String propertyName = prefix + file.getName();
+        String propertyName = createPropertyName(file);
         String propertyValue = readFileFully(file);
-        getLog().debug(propertyName + " = " + propertyValue);
+        if (getLog().isDebugEnabled()) {
+          getLog().debug(propertyName + " = " + propertyValue);
+        } else {
+          getLog().info("setting " + propertyName);
+        }
 
         projectProperties.setProperty(propertyName, propertyValue);
       }
@@ -57,6 +72,10 @@ public class ReadFilesMojo extends AbstractMojo {
     } catch (IOException io) {
       throw new MojoExecutionException(io.getMessage(), io);
     }
+  }
+
+  private String createPropertyName(File file) {
+    return prefix != null ? prefix + file.getName() : file.getName();
   }
 
   private Charset createCharset() {

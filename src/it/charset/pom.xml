@@ -4,11 +4,11 @@
 
   <parent>
     <groupId>org.honton.chas</groupId>
-    <artifactId>readfile-it-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>readfiles-it-parent</artifactId>
+    <version>0.0.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>readfile-charset-it</artifactId>
+  <artifactId>readfiles-charset-it</artifactId>
 
   <build>
     <plugins>
@@ -26,7 +26,7 @@
             <configuration>
               <rules>
                 <requireProperty>
-                  <property>readfiles.iso-8859-1</property>
+                  <property>iso-8859-1</property>
                   <regex>¤¦¨´¸¼½¾</regex>
                 </requireProperty>
               </rules>
@@ -38,7 +38,7 @@
 
       <plugin>
         <groupId>org.honton.chas</groupId>
-        <artifactId>readfile-maven-plugin</artifactId>
+        <artifactId>readfiles-maven-plugin</artifactId>
         <configuration>
           <encoding>iso-8859-1</encoding>
           <files>

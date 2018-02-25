@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.honton.chas</groupId>
-  <artifactId>readfile-it-parent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <artifactId>readfiles-it-parent</artifactId>
+  <version>0.0.1</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -26,8 +26,8 @@
 
         <plugin>
           <groupId>org.honton.chas</groupId>
-          <artifactId>readfile-maven-plugin</artifactId>
-          <version>0.0.1-SNAPSHOT</version>
+          <artifactId>readfiles-maven-plugin</artifactId>
+          <version>0.0.1</version>
           <executions>
             <execution>
               <goals>
@@ -39,6 +39,47 @@
 
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.honton.chas</groupId>
+        <artifactId>readfiles-maven-plugin</artifactId>
+        <version>0.0.1</version>
+        <executions>
+          <execution>
+            <id>configurations</id>
+            <goals>
+              <goal>readfiles</goal>
+            </goals>
+            <configuration>
+              <files>
+                <!-- set application.json property -->
+                <file>${basedir}/src/main/resources/application.json</file>
+                <!-- set application.conf property -->
+                <file>${basedir}/src/main/resources/environment.conf</file>
+              </files>
+              <skip>true</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>index.html</id>
+            <goals>
+              <goal>readfiles</goal>
+            </goals>
+            <configuration>
+              <encoding>iso-8859-1</encoding>
+              <prefix>page.</prefix>
+              <files>
+                <!-- set page.index.html property -->
+                <file>${basedir}/src/main/resources/index.html</file>
+              </files>
+              <skip>true</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
   </build>
 
 </project>
