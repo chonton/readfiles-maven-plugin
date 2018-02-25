@@ -24,19 +24,6 @@
           <version>1.4.1</version>
         </plugin>
 
-        <plugin>
-          <groupId>org.honton.chas</groupId>
-          <artifactId>readfiles-maven-plugin</artifactId>
-          <version>0.0.1</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>readfiles</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
       </plugins>
     </pluginManagement>
 
@@ -47,34 +34,9 @@
         <version>0.0.1</version>
         <executions>
           <execution>
-            <id>configurations</id>
             <goals>
               <goal>readfiles</goal>
             </goals>
-            <configuration>
-              <files>
-                <!-- set application.json property -->
-                <file>${basedir}/src/main/resources/application.json</file>
-                <!-- set application.conf property -->
-                <file>${basedir}/src/main/resources/environment.conf</file>
-              </files>
-              <skip>true</skip>
-            </configuration>
-          </execution>
-          <execution>
-            <id>index.html</id>
-            <goals>
-              <goal>readfiles</goal>
-            </goals>
-            <configuration>
-              <encoding>iso-8859-1</encoding>
-              <prefix>page.</prefix>
-              <files>
-                <!-- set page.index.html property -->
-                <file>${basedir}/src/main/resources/index.html</file>
-              </files>
-              <skip>true</skip>
-            </configuration>
           </execution>
         </executions>
       </plugin>

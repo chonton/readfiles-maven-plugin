@@ -35,7 +35,7 @@ Typical use:
               <files>
                 <!-- set application.json property -->
                 <file>${basedir}/src/main/resources/application.json</file>
-                <!-- set application.conf property -->
+                <!-- set environment.conf property -->
                 <file>${basedir}/src/main/resources/environment.conf</file>
               </files>
             </configuration>
