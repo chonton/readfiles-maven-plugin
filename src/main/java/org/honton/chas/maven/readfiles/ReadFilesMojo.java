@@ -26,6 +26,14 @@ public class ReadFilesMojo extends AbstractMojo {
   private String prefix;
 
   /**
+   * Whether to trim leading and trailing whitespace characters.
+   * 
+   * @since 0.0.2
+   */
+  @Parameter(defaultValue = "false", property = "readfiles.trim")
+  private boolean trim;
+
+  /**
    * Charset encoding of the source files.  Defaults to UTF-8
    */
   @Parameter(defaultValue = "${project.build.sourceEncoding}")
@@ -84,6 +92,10 @@ public class ReadFilesMojo extends AbstractMojo {
 
   private String readFileFully(File file) throws IOException {
     byte[] encoded = Files.readAllBytes(file.toPath());
-    return new String(encoded, charset);
+    final String result = new String(encoded, charset);
+    if (this.trim) {
+      return result.trim();
+    }
+    return result;
   }
 }
