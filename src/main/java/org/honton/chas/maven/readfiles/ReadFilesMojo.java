@@ -26,6 +26,14 @@ public class ReadFilesMojo extends AbstractMojo {
   private String prefix;
 
   /**
+   * Whether to trim leading and trailing whitespace characters.
+   * 
+   * @since 0.0.2
+   */
+  @Parameter(defaultValue = "false", property = "readfiles.trim")
+  private boolean trim;
+
+  /**
    * Charset encoding of the source files.  Defaults to UTF-8
    */
   @Parameter(defaultValue = "${project.build.sourceEncoding}")
@@ -40,13 +48,33 @@ public class ReadFilesMojo extends AbstractMojo {
   @Parameter(defaultValue = "${project.properties}", readonly = true, required = true)
   private Properties projectProperties;
 
-  private Charset charset;
+  /**
+   * Transformations to apply to file contents before storing it into the property.
+   * 
+   * @since 0.1.0
+   */
+  @Parameter
+  private RegexReplacementRule[] regexReplacements;
 
   /**
    * List of files to read
    */
   @Parameter
   private File[] files;
+  
+  private Transformation compileTransformations() throws MojoExecutionException {
+    Transformation result = new NoopTransformation();
+    if (null != this.regexReplacements ) {
+      for(int i = 0; i < this.regexReplacements.length; i++) {
+        try {
+          result = new ChainedTransformation(result, this.regexReplacements[i].compile());
+        } catch (IllegalStateException e) {
+          throw new MojoExecutionException("Failed compiling regular expression at index "+ i + ": " + e, e);
+        }
+      }
+    }
+    return result;
+  }
 
   public void execute() throws MojoExecutionException {
     if (skip) {
@@ -54,12 +82,13 @@ public class ReadFilesMojo extends AbstractMojo {
       return;
     }
 
-    charset = createCharset();
+    final Charset charset = createCharset();
+    final Transformation transformation = compileTransformations();
     try {
       for (File file : files) {
 
         String propertyName = createPropertyName(file);
-        String propertyValue = readFileFully(file);
+        String propertyValue = transformation.transform(readFileFully(file, charset));
         if (getLog().isDebugEnabled()) {
           getLog().debug(propertyName + " = " + propertyValue);
         } else {
@@ -82,8 +111,13 @@ public class ReadFilesMojo extends AbstractMojo {
     return encoding != null ? Charset.forName(encoding) : StandardCharsets.UTF_8;
   }
 
-  private String readFileFully(File file) throws IOException {
+  private String readFileFully(File file, Charset charset) throws IOException {
     byte[] encoded = Files.readAllBytes(file.toPath());
-    return new String(encoded, charset);
+    final String result = new String(encoded, charset);
+    if (this.trim) {
+      return result.trim();
+    }
+    return result;
   }
+
 }
