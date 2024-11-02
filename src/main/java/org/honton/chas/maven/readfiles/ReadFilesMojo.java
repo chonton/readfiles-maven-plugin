@@ -16,7 +16,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  * Read files into maven properties.  The contents of each file is read in full.  The content is
  * then assigned to a maven property of the same name.
  */
-@Mojo(name = "readfiles", defaultPhase = LifecyclePhase.INITIALIZE)
+@Mojo(name = "readfiles", defaultPhase = LifecyclePhase.INITIALIZE, threadSafe = true)
 public class ReadFilesMojo extends AbstractMojo {
 
   /**
