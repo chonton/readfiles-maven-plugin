@@ -28,7 +28,7 @@ public class ReadFilesMojo extends AbstractMojo {
   /**
    * Whether to trim leading and trailing whitespace characters.
    * 
-   * @since 0.0.2
+   * @since 0.1.0
    */
   @Parameter(defaultValue = "false", property = "readfiles.trim")
   private boolean trim;
