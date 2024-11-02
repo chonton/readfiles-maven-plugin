@@ -4,7 +4,7 @@
 
   <groupId>org.honton.chas</groupId>
   <artifactId>readfiles-maven-plugin</artifactId>
-  <version>0.0.1</version>
+  <version>0.1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Read Files Maven Plugin</name>
@@ -153,6 +153,7 @@
         <version>2.0.0</version>
         <configuration>
           <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
         </configuration>
         <executions>
           <execution>
