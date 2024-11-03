@@ -31,7 +31,7 @@
       <plugin>
         <groupId>org.honton.chas</groupId>
         <artifactId>readfiles-maven-plugin</artifactId>
-        <version>0.0.1</version>
+        <version>@pom.version@</version>
         <executions>
           <execution>
             <goals>
