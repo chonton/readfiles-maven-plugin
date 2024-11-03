@@ -7,15 +7,26 @@ Mojo details at [plugin info](https://chonton.github.io/readfiles-maven-plugin/0
 Just one goal: [readfiles](https://chonton.github.io/readfiles-maven-plugin/0.0.1/readfiles-mojo.html) 
 sets maven properties to the contents of files.  Each file is read fully and the contents are
 set to maven properties of the same name as the files.
- 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-|files      |         | The list of files to read |
-|encoding   |${project.build.sourceEncoding}|The character encoding of the file (UTF-8 if not specified)|
-|prefix     |         | Prefix each property name with this value |
-|skip       |${readfiles.skip}|Skip executing the plugin|
 
-Typical use:
+Optionally, the contents of the file can be trimmed of whitespace, or transformed using a series of 
+regular expression patterns and replacements.
+ 
+| Parameter         | Default | Property                        | Description                                    |
+|-------------------|---------|---------------------------------|------------------------------------------------|
+| files             |         |                                 | The list of files to read                      |
+| encoding          | UTF-8   | ${project.build.sourceEncoding} | The character encoding of the file             |
+| prefix            |         | ${readfiles.prefix}             | Prefix each property name with this value      |
+| regexReplacements |         |                                 | List of pattern replacements                   |
+| skip              | false   | ${readfiles.skip}               | Skip executing the plugin                      |
+| trim              | false   | ${readfiles.skip}               | Trim whitespace from beginning and end of file |
+
+## regexReplacement Elements
+| Parameter         | Description                                                                                                                                    |
+|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| pattern           | A [java regular expression](https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/regex/Pattern.html)                         |
+| replacement       | The [replaceAll value](https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/regex/Matcher.html#replaceAll(java.lang.String)) |
+
+## Typical use:
 
 ```xml
   <build>
@@ -24,7 +35,7 @@ Typical use:
       <plugin>
         <groupId>org.honton.chas</groupId>
         <artifactId>readfiles-maven-plugin</artifactId>
-        <version>0.0.1</version>
+        <version>0.1.0</version>
         <executions>
           <execution>
             <id>configurations</id>
@@ -59,4 +70,27 @@ Typical use:
 
     </plugins>
   </build>
+```
+
+## Pattern Replacement:
+
+```xml
+<build>
+<plugins>
+  <plugin>
+    <groupId>org.honton.chas</groupId>
+    <artifactId>readfiles-maven-plugin</artifactId>
+    <configuration>
+      <files>
+        <file>${basedir}/.nvmrc</file>
+      </files>
+      <regexReplacements>
+        <regexReplacement>
+          <pattern>^v?(\S+)\s*$</pattern>
+          <replacement>v$1</replacement>
+        </regexReplacement>
+      </regexReplacements>
+    </configuration>
+  </plugin>
+</build>
 ```
