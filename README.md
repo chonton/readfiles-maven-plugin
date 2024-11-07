@@ -75,8 +75,6 @@ regular expression patterns and replacements.
 ## Pattern Replacement:
 
 ```xml
-<build>
-<plugins>
   <plugin>
     <groupId>org.honton.chas</groupId>
     <artifactId>readfiles-maven-plugin</artifactId>
@@ -92,5 +90,4 @@ regular expression patterns and replacements.
       </regexReplacements>
     </configuration>
   </plugin>
-</build>
 ```

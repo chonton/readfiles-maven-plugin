@@ -4,7 +4,7 @@
 
   <groupId>org.honton.chas</groupId>
   <artifactId>readfiles-maven-plugin</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.1.0</version>
   <packaging>maven-plugin</packaging>
 
   <name>Read Files Maven Plugin</name>
@@ -26,6 +26,10 @@
       <name>chas honton</name>
       <email>chas@honton.org</email>
       <url>https://www.linkedin.com/in/chonton</url>
+    </developer>
+    <developer>
+      <name>Antoine Malliarakis</name>
+      <url>https://github.com/smaarn</url>
     </developer>
   </developers>
 
